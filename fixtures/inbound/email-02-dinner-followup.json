@@ -1,0 +1,9 @@
+{
+  "id": "email-02",
+  "from": "ade@example.com",
+  "from_name": "Ade Okafor",
+  "subject": "Re: Okafor anniversary dinner - one more thing",
+  "body": "One more thing before tomorrow - could you let the kitchen know it is a nut allergy, not just a preference? Otherwise all good and looking forward to it.",
+  "received_at": "2026-06-01T10:00:00+00:00",
+  "folder": "INBOX"
+}

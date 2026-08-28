@@ -1,0 +1,9 @@
+{
+  "kind": "new_enquiry",
+  "matched_event_id": null,
+  "event_type": "wedding",
+  "pax": 60,
+  "requested_spaces": [],
+  "needs_human": false,
+  "reason": "Clear new wedding enquiry naming a September Saturday and a guest count; no existing event matches."
+}

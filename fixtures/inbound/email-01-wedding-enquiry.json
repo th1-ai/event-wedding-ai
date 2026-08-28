@@ -1,0 +1,9 @@
+{
+  "id": "email-01",
+  "from": "jordan.ferreira@example.com",
+  "from_name": "Jordan Ferreira",
+  "subject": "Wedding enquiry - a Saturday in September",
+  "body": "Hello, we are looking at holding our wedding with you next September, probably around 60 guests. We would love the ballroom and the terrace if they are free. Could you tell us what is available?",
+  "received_at": "2026-06-01T09:00:00+00:00",
+  "folder": "INBOX"
+}

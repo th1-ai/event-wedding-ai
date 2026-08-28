@@ -1,0 +1,31 @@
+{
+  "id": "EV-03",
+  "name": "Okafor anniversary dinner",
+  "org": "",
+  "type": "offsite",
+  "stage": "ready",
+  "event_day_offset": 1,
+  "pax": 18,
+  "est_value": 2400,
+  "season_band": "shoulder",
+  "package_id": "gold",
+  "spaces": [{"space": "private-dining-room", "layout": "private_dining", "when": "evening"}],
+  "extras": [],
+  "stakeholders": [
+    {"key": "host", "name": "Ade Okafor", "role": "client", "email": "ade@example.com"}
+  ],
+  "deposit": {"amount": 400, "due_offset": -20, "paid": true},
+  "thread": [
+    {"from": "Ade Okafor", "role": "client", "body": "All set, see you tomorrow.", "at_offset": -3, "ai": false, "re": null}
+  ],
+  "checklist": [
+    {"item_key": "qualify", "label": "Qualify the enquiry", "owner": "ai", "status": "done", "due_offset": -60},
+    {"item_key": "proposal", "label": "Send the proposal", "owner": "ai", "status": "done", "due_offset": -45},
+    {"item_key": "contract", "label": "Countersigned contract", "owner": "hotel", "status": "done", "due_offset": -35},
+    {"item_key": "deposit", "label": "Deposit", "owner": "ai", "status": "done", "due_offset": -30},
+    {"item_key": "agenda", "label": "Agenda confirmed", "owner": "client", "status": "done", "due_offset": -14},
+    {"item_key": "final-numbers", "label": "Final numbers", "owner": "client", "status": "done", "due_offset": -7},
+    {"item_key": "beo", "label": "BEO issued", "owner": "ai", "status": "done", "due_offset": -4},
+    {"item_key": "run-sheet", "label": "Run sheet signed off", "owner": "hotel", "status": "done", "due_offset": -1}
+  ]
+}

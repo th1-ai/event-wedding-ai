@@ -1,0 +1,9 @@
+{
+  "kind": "unrelated",
+  "matched_event_id": null,
+  "event_type": "meeting",
+  "pax": 0,
+  "requested_spaces": [],
+  "needs_human": true,
+  "reason": "Message gives no identifying detail - no event name, date or organisation - cannot match it to an open event or a new one with confidence."
+}

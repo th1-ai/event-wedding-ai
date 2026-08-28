@@ -1,0 +1,9 @@
+{
+  "id": "email-03",
+  "from": "unknown@example.com",
+  "from_name": "R. Costa",
+  "subject": "Following up",
+  "body": "Hi, just following up on what we discussed last week. Let me know when you get a chance.",
+  "received_at": "2026-06-01T11:00:00+00:00",
+  "folder": "INBOX"
+}

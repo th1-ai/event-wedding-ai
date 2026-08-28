@@ -1,0 +1,39 @@
+{
+  "id": "EV-02",
+  "name": "Solberg Analytics conference",
+  "org": "Solberg Analytics",
+  "type": "conference",
+  "stage": "negotiation",
+  "event_day_offset": 45,
+  "pax": 120,
+  "est_value": 20000,
+  "season_band": "peak",
+  "package_id": "day-delegate",
+  "spaces": [
+    {"space": "grand-ballroom", "layout": "theatre", "when": "day 1"},
+    {"space": "grand-ballroom", "layout": "theatre", "when": "day 2"}
+  ],
+  "extras": [
+    {"label": "AV production - stage set, LED wall, two technicians (2 days)", "amount": 1560},
+    {"label": "Delegate materials", "amount": 360}
+  ],
+  "stakeholders": [
+    {"key": "procurement", "name": "Marcus Feldt", "role": "client", "email": "marcus@example.com"}
+  ],
+  "deposit": {"amount": 5000, "due_offset": 20, "paid": false},
+  "thread": [
+    {"from": "Marcus Feldt", "role": "client", "body": "We have compared three venues and you are not the cheapest. To recommend you internally I need 15% off the total and the AV bundled rather than itemised.", "at_offset": -1, "ai": false, "re": null}
+  ],
+  "checklist": [
+    {"item_key": "qualify", "label": "Qualify the enquiry", "owner": "ai", "status": "done", "due_offset": -45},
+    {"item_key": "proposal", "label": "Send the proposal", "owner": "ai", "status": "done", "due_offset": -30},
+    {"item_key": "negotiation", "label": "Pricing agreed", "owner": "hotel", "status": "waiting", "due_offset": -15},
+    {"item_key": "contract", "label": "Countersigned contract", "owner": "hotel", "status": "todo", "due_offset": -5},
+    {"item_key": "deposit", "label": "Deposit", "owner": "ai", "status": "todo", "due_offset": 0},
+    {"item_key": "breakouts", "label": "Breakout room plan", "owner": "client", "status": "todo", "due_offset": 15},
+    {"item_key": "room-block", "label": "Room block released to the PMS", "owner": "ai", "status": "todo", "due_offset": 15},
+    {"item_key": "final-numbers", "label": "Final delegate numbers", "owner": "client", "status": "todo", "due_offset": 35},
+    {"item_key": "beo", "label": "BEO issued", "owner": "ai", "status": "todo", "due_offset": 38},
+    {"item_key": "run-sheet", "label": "Run sheet signed off", "owner": "hotel", "status": "todo", "due_offset": 42}
+  ]
+}

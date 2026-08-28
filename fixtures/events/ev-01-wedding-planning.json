@@ -1,0 +1,45 @@
+{
+  "id": "EV-01",
+  "name": "Whitfield wedding",
+  "org": "",
+  "type": "wedding",
+  "stage": "planning",
+  "event_day_offset": 270,
+  "pax": 90,
+  "est_value": 24800,
+  "season_band": "low",
+  "package_id": "platinum",
+  "spaces": [
+    {"space": "grand-ballroom", "layout": "banquet", "when": "evening"},
+    {"space": "garden-terrace", "layout": "standing", "when": "afternoon"}
+  ],
+  "extras": [],
+  "stakeholders": [
+    {"key": "bride", "name": "Priya Whitfield", "role": "client", "email": "priya@example.com"},
+    {"key": "mother", "name": "Denise Whitfield", "role": "client", "email": "denise@example.com"},
+    {"key": "florist_vendor", "name": "Blossom and Co", "role": "vendor", "email": "orders@example.com"}
+  ],
+  "deposit": {"amount": 7680, "due_offset": 250, "paid": true},
+  "thread": [
+    {"from": "Hotel Aurora Events Team", "role": "ai", "body": "Just checking in - any news on the photographer?", "at_offset": -6, "ai": true, "held": false, "re": "photographer"},
+    {"from": "Blossom and Co", "role": "vendor", "body": "Confirmed - we will have the arrangements ready and delivered the morning of.", "at_offset": -4, "ai": false, "re": "florist"},
+    {"from": "Priya Whitfield", "role": "client", "body": "Numbers will be 92 total, I will confirm the final list next week.", "at_offset": -2, "ai": false, "re": "final-numbers"},
+    {"from": "Denise Whitfield", "role": "client", "body": "Quick one - my daughter has coeliac disease, and I want to make sure the kitchen can handle that properly while everyone else eats? She will not make a fuss about it, which is exactly why I am making it for her.", "at_offset": -1, "ai": false, "re": null}
+  ],
+  "checklist": [
+    {"item_key": "qualify", "label": "Qualify the enquiry", "owner": "ai", "status": "done", "due_offset": -95},
+    {"item_key": "site-visit", "label": "Site visit", "owner": "ai", "status": "done", "due_offset": -30},
+    {"item_key": "proposal", "label": "Send the proposal", "owner": "ai", "status": "done", "due_offset": -10},
+    {"item_key": "contract", "label": "Countersigned contract", "owner": "hotel", "status": "done", "due_offset": 30},
+    {"item_key": "deposit", "label": "Deposit", "owner": "ai", "status": "done", "due_offset": 50},
+    {"item_key": "menu-tasting", "label": "Menu tasting booked", "owner": "client", "status": "done", "due_offset": 150},
+    {"item_key": "band", "label": "Band or DJ confirmed", "owner": "client", "status": "done", "due_offset": 195},
+    {"item_key": "room-block", "label": "Room block released to the PMS", "owner": "ai", "status": "done", "due_offset": 210},
+    {"item_key": "florist", "label": "Florist confirmed", "owner": "client", "status": "waiting", "due_offset": 180},
+    {"item_key": "photographer", "label": "Photographer confirmed", "owner": "client", "status": "waiting", "due_offset": 180},
+    {"item_key": "final-numbers", "label": "Final guest numbers", "owner": "client", "status": "waiting", "due_offset": 256},
+    {"item_key": "beo", "label": "BEO issued", "owner": "ai", "status": "todo", "due_offset": 260},
+    {"item_key": "final-payment", "label": "Final payment", "owner": "ai", "status": "todo", "due_offset": 263},
+    {"item_key": "run-sheet", "label": "Run sheet signed off", "owner": "hotel", "status": "todo", "due_offset": 265}
+  ]
+}

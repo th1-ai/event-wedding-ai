@@ -1,0 +1,27 @@
+{
+  "id": "EV-06",
+  "name": "Ostrom offsite",
+  "org": "Ostrom Partners",
+  "type": "offsite",
+  "stage": "done",
+  "event_day_offset": -32,
+  "pax": 24,
+  "est_value": 3600,
+  "season_band": "shoulder",
+  "package_id": "silver",
+  "spaces": [{"space": "garden-suite", "layout": "theatre", "when": "day"}],
+  "extras": [],
+  "stakeholders": [
+    {"key": "lead", "name": "Freya Lindqvist", "role": "client", "email": "freya@example.com"}
+  ],
+  "deposit": {"amount": 500, "due_offset": -45, "paid": true},
+  "thread": [],
+  "checklist": [
+    {"item_key": "qualify", "label": "Qualify the enquiry", "owner": "ai", "status": "done", "due_offset": -92},
+    {"item_key": "proposal", "label": "Send the proposal", "owner": "ai", "status": "done", "due_offset": -77},
+    {"item_key": "contract", "label": "Countersigned contract", "owner": "hotel", "status": "done", "due_offset": -67},
+    {"item_key": "deposit", "label": "Deposit", "owner": "ai", "status": "done", "due_offset": -62},
+    {"item_key": "beo", "label": "BEO issued", "owner": "ai", "status": "done", "due_offset": -37},
+    {"item_key": "run-sheet", "label": "Run sheet signed off", "owner": "hotel", "status": "done", "due_offset": -34}
+  ]
+}

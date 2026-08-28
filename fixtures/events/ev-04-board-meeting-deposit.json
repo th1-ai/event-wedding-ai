@@ -1,0 +1,26 @@
+{
+  "id": "EV-04",
+  "name": "Marnix Group board meeting",
+  "org": "Marnix Group",
+  "type": "meeting",
+  "stage": "contracted",
+  "event_day_offset": 10,
+  "pax": 12,
+  "est_value": 1800,
+  "season_band": "shoulder",
+  "package_id": "day-delegate",
+  "spaces": [{"space": "boardroom", "layout": "boardroom", "when": "morning"}],
+  "extras": [],
+  "stakeholders": [
+    {"key": "ea", "name": "Sanne Bakker", "role": "client", "email": "sanne@example.com"}
+  ],
+  "deposit": {"amount": 550, "due_offset": 4, "paid": false},
+  "thread": [],
+  "checklist": [
+    {"item_key": "qualify", "label": "Qualify the enquiry", "owner": "ai", "status": "done", "due_offset": -21},
+    {"item_key": "proposal", "label": "Send the proposal", "owner": "ai", "status": "done", "due_offset": -16},
+    {"item_key": "deposit", "label": "Deposit", "owner": "ai", "status": "waiting", "due_offset": -10},
+    {"item_key": "catering", "label": "Catering order confirmed", "owner": "client", "status": "todo", "due_offset": 5},
+    {"item_key": "run-sheet", "label": "Run sheet signed off", "owner": "hotel", "status": "todo", "due_offset": 8}
+  ]
+}

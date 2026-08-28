@@ -1,0 +1,6 @@
+[
+  {"id": "sg-office", "avatar": "mice", "keyword": "office", "label": "opened a new office", "source_id": "src-public", "enabled": true},
+  {"id": "sg-hiring", "avatar": "mice", "keyword": "hiring", "label": "hiring burst", "source_id": "src-public", "enabled": true},
+  {"id": "sg-summit", "avatar": "mice", "keyword": "Summit", "label": "exhibiting at a local tech summit", "source_id": "src-summit", "enabled": true},
+  {"id": "sg-engaged", "avatar": "wedding", "keyword": "engaged", "label": "recently engaged", "source_id": "src-public", "enabled": true}
+]

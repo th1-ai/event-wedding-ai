@@ -1,0 +1,193 @@
+# ---------------------------------------------------------------------------
+# agent.yaml - Event & Wedding AI's own knobs. `make setup` copies this to
+# config/agent.yaml; edit that copy, this example stays as a clean reference.
+#
+# Every write this agent makes still goes through mode: shadow / live and
+# review.require_approval_for in config/hotel.yaml - nothing here loosens
+# that. See docs/safety.md and docs/how-it-works.md ("Modes").
+# ---------------------------------------------------------------------------
+
+# --- Which systems this agent actually uses through core/adapters ----------
+# The function-space diary and the rate card below are this agent's OWN
+# tables, seeded from this file - not a PMS call (docs/how-it-works.md
+# design decision 7, and the "PMS" row of docs/integrations.md). So pms is
+# left out here on purpose: systems.pms.adapter stays mock until someone
+# wires the room-block write, and it must never trigger the "SAMPLE DATA"
+# warning on the review queue. Listing email (every event thread) and
+# messaging (the escalation nudge, and Event Outreach AI's WhatsApp steps)
+# still warns you correctly if THOSE are left on mock once you run for real.
+systems_used: [email, messaging]
+
+# Co-pilot ("every send waits for your OK") or autopilot ("routine sends go
+# out on their own - pricing still comes to you"). A counter-offer is held in
+# BOTH. This only changes routine sends (replies, chases, deposit reminders,
+# site-visit offers); mode: shadow in hotel.yaml still blocks everything
+# regardless of this flag - see docs/how-it-works.md.
+autopilot: false
+
+# --- Cadence and thresholds, from the spec's own constants ------------------
+chase_silence_days: 5          # a pinged client item silent this long gets one chase
+deposit_window_days: 14        # an unpaid deposit inside this window gets a reminder
+hold_expiry_days: 7            # an AI-placed space hold is good for this long
+negotiation_band_pct: 8        # the most the AI may counter - a hard ceiling, always held
+wedding_saturday_uplift: 600   # per qualifying space-use, weddings only
+uplift_spaces: [grand-ballroom, garden-terrace]   # the only spaces that carry the uplift
+default_wedding_spaces: [grand-ballroom, garden-terrace]   # used when an enquiry lists no spaces yet
+alt_date_steps: [-7, 7, -14, 14, -21, 21]          # alternate-date probe order, nearest first
+site_visit_slots:              # offered relative to the day cursor
+  - {offset: 4, time: "11:00"}
+  - {offset: 6, time: "15:00"}
+  - {offset: 8, time: "16:30"}
+enquiry_attachments: [event-spaces-brochure, events-pricing-sheet]
+menus_doc: catering-menus
+
+# --- The seven behavioural toggles ------------------------------------------
+# Flip one off to see exactly what stops happening - each is named for what
+# it proves when it is off. See docs/safety.md.
+rules:
+  checklist_templates: true    # off -> every new enquiry gets the 6-item generic list
+  site_visit_offer: true       # off -> no slots offered; the visit waits for a human
+  hold_expiry: true            # off -> holds sit on the diary indefinitely
+  follow_up_5d: true           # off -> the chase never fires
+  deposit_reminder_14d: true   # off -> the reminder is never drafted
+  negotiation_band: true       # off -> the ask escalates with no counter drafted at all
+  attach_materials: true       # off -> replies go out as plain text, no attachments
+
+# --- Venue inventory ---------------------------------------------------------
+# Edit this to match your own function spaces. Capacities are per layout.
+# A restaurant install: drop grand-ballroom/garden-suite, keep
+# private-dining-room and add a `whole-venue` row - see docs/integrations.md.
+spaces:
+  - slug: grand-ballroom
+    name: "Grand Ballroom"
+    capacities: {banquet: 160, theatre: 200, cabaret: 110, standing: 240}
+  - slug: garden-terrace
+    name: "Garden Terrace"
+    capacities: {standing: 120, banquet: 80}
+  - slug: private-dining-room
+    name: "Private Dining Room"
+    capacities: {private_dining: 22, composite: 36}
+  - slug: boardroom
+    name: "Boardroom"
+    capacities: {boardroom: 12}
+  - slug: garden-suite
+    name: "Garden Suite"
+    capacities: {theatre: 36, cabaret: 20}
+
+# --- Rate card ----------------------------------------------------------------
+# Venue rows are EUR per day; package rows are EUR per person. Three season
+# bands: low / shoulder / peak. tools/pricing.py:build_quote() is the ONLY
+# place a price is computed - the BEO and the pricing sheet call it too, so
+# they cannot disagree. See docs/how-it-works.md "Never quote off memory".
+rates:
+  venue:
+    grand-ballroom:      {low: 2000, shoulder: 2500, peak: 3100}
+    garden-terrace:      {low: 1300, shoulder: 1650, peak: 2000}
+    private-dining-room: {low: 380,  shoulder: 460,  peak: 600}
+    boardroom:           {low: 220,  shoulder: 270,  peak: 320}
+    garden-suite:        {low: 650,  shoulder: 820,  peak: 1000}
+  package:
+    silver:       {low: 70,  shoulder: 78,  peak: 90}
+    gold:         {low: 98,  shoulder: 110, peak: 126}
+    platinum:     {low: 136, shoulder: 150, peak: 173}
+    day-delegate: {low: 78,  shoulder: 86,  peak: 99}
+
+# --- Checklist templates -----------------------------------------------------
+# One per event type, plus "generic" (used when rules.checklist_templates is
+# off). `key` must be stable - thread messages and chases reference it.
+# `rel_due` is days before the event day (negative = before).
+checklist_templates:
+  wedding:
+    - {key: qualify,       label: "Qualify the enquiry",                owner: ai,     rel_due: -365}
+    - {key: site-visit,    label: "Site visit",                          owner: ai,     rel_due: -300}
+    - {key: proposal,      label: "Send the proposal",                   owner: ai,     rel_due: -280}
+    - {key: contract,      label: "Countersigned contract",              owner: hotel,  rel_due: -240}
+    - {key: deposit,       label: "Deposit",                             owner: ai,     rel_due: -220}
+    - {key: menu-tasting,  label: "Menu tasting booked",                 owner: client, rel_due: -120}
+    - {key: florist,       label: "Florist confirmed",                   owner: client, rel_due: -90}
+    - {key: photographer,  label: "Photographer confirmed",              owner: client, rel_due: -90}
+    - {key: band,          label: "Band or DJ confirmed",                owner: client, rel_due: -75}
+    - {key: room-block,    label: "Room block released to the PMS",      owner: ai,     rel_due: -60}
+    - {key: final-numbers, label: "Final guest numbers",                 owner: client, rel_due: -14}
+    - {key: beo,           label: "BEO issued",                         owner: ai,     rel_due: -10}
+    - {key: final-payment, label: "Final payment",                       owner: ai,     rel_due: -7}
+    - {key: run-sheet,     label: "Run sheet signed off",                owner: hotel,  rel_due: -5}
+  conference:
+    - {key: qualify,       label: "Qualify the enquiry",                 owner: ai,     rel_due: -90}
+    - {key: proposal,      label: "Send the proposal",                   owner: ai,     rel_due: -75}
+    - {key: negotiation,   label: "Pricing agreed",                      owner: hotel,  rel_due: -60}
+    - {key: contract,      label: "Countersigned contract",              owner: hotel,  rel_due: -50}
+    - {key: deposit,       label: "Deposit",                             owner: ai,     rel_due: -45}
+    - {key: breakouts,     label: "Breakout room plan",                  owner: client, rel_due: -30}
+    - {key: room-block,    label: "Room block released to the PMS",      owner: ai,     rel_due: -30}
+    - {key: final-numbers, label: "Final delegate numbers",              owner: client, rel_due: -10}
+    - {key: beo,           label: "BEO issued",                         owner: ai,     rel_due: -7}
+    - {key: run-sheet,     label: "Run sheet signed off",                owner: hotel,  rel_due: -3}
+  offsite:
+    - {key: qualify,       label: "Qualify the enquiry",                 owner: ai,     rel_due: -60}
+    - {key: proposal,      label: "Send the proposal",                   owner: ai,     rel_due: -45}
+    - {key: contract,      label: "Countersigned contract",              owner: hotel,  rel_due: -35}
+    - {key: deposit,       label: "Deposit",                             owner: ai,     rel_due: -30}
+    - {key: agenda,        label: "Agenda confirmed",                    owner: client, rel_due: -14}
+    - {key: final-numbers, label: "Final numbers",                       owner: client, rel_due: -7}
+    - {key: beo,           label: "BEO issued",                         owner: ai,     rel_due: -5}
+    - {key: run-sheet,     label: "Run sheet signed off",                owner: hotel,  rel_due: -2}
+  meeting:
+    - {key: qualify,       label: "Qualify the enquiry",                 owner: ai,     rel_due: -21}
+    - {key: proposal,      label: "Send the proposal",                   owner: ai,     rel_due: -16}
+    - {key: deposit,       label: "Deposit",                             owner: ai,     rel_due: -10}
+    - {key: catering,      label: "Catering order confirmed",            owner: client, rel_due: -5}
+    - {key: run-sheet,     label: "Run sheet signed off",                owner: hotel,  rel_due: -2}
+  generic:
+    - {key: qualify,       label: "Qualify the enquiry",                 owner: ai,     rel_due: -60}
+    - {key: proposal,      label: "Send the proposal",                   owner: ai,     rel_due: -45}
+    - {key: contract,      label: "Countersigned contract",              owner: hotel,  rel_due: -35}
+    - {key: deposit,       label: "Deposit",                             owner: ai,     rel_due: -30}
+    - {key: beo,           label: "BEO issued",                         owner: ai,     rel_due: -5}
+    - {key: run-sheet,     label: "Run sheet signed off",                owner: hotel,  rel_due: -2}
+
+# --- Event Outreach AI ("The Rainmaker") - folded-in sub-agent --------------
+# Off by default: the planner sweep is fully useful on its own, working
+# whatever enquiries already exist. Turn this on when you want the calendar
+# filled from the outside too. See docs/sub-agents.md and workflows/20-event-outreach.md.
+subagents:
+  event_outreach:
+    enabled: false
+    daily_caps: {linkedin: 10, email: 8, whatsapp: 5, instagram: 5}
+    warmup_ramp: true          # a young inbox is capped below its nominal daily cap
+    weekend_pause: true        # nothing sends on day 5/6 of each campaign week
+    stop_on_reply: true        # NEVER turn this off outside a test - see docs/safety.md
+    withdraw_after_days: 7     # unaccepted LinkedIn invite withdrawn quietly
+    suppress_dnc: true         # NEVER turn this off outside a test
+    source_vetting: true       # only approved/testing signal sources feed a scan
+    ai_personalization: true   # off -> every lead gets the same generic opener
+    meeting_value: 12500       # est_value (in config/hotel.yaml: currency) stamped on the handed-off event row
+    enrich_cost_eur: {hunter: 0.034, findymail: 0.049}
+
+# --- Recurring jobs ----------------------------------------------------------
+# A MAPPING of job name -> {command, cadence} - `tools/schedule.py` requires
+# this exact shape (`isinstance(block, dict)`), and README "What runs when"
+# must keep matching it. `cadence:` is a 5-field cron expression or one of
+# core/schedule.py: CADENCES ("every-15-min", "hourly", "nightly", "morning",
+# "weekly", ...) - free text like "daily at 07:30" is neither, and silently
+# falls back to every-15-min. See SIMULATION.md Finding 2.
+# `command:` has NO "python3 " prefix - core/schedule.py's render() already
+# puts the right interpreter in front of it (the venv's if there is one),
+# so a prefix here would produce a crontab line that tries to run a script
+# literally named "python3".
+# `make schedule ARGS="--all"` prints one ready-to-install snippet per job.
+schedule:
+  planner-sweep:
+    command: "tools/run.py --once"
+    cadence: "30 7 * * *"    # daily at 07:30
+  intake:
+    command: "tools/run.py --once --intake"
+    cadence: "every-15-min"
+  review-digest:
+    command: "tools/report.py --digest"
+    cadence: "0 8 * * *"     # daily at 08:00
+  outreach-tick:
+    # Only meaningful once subagents.event_outreach.enabled is true above -
+    # tools/outreach.py tick is a no-op otherwise, see docs/sub-agents.md.
+    command: "tools/outreach.py tick"
+    cadence: "0 9 * * *"     # daily at 09:00

@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "properties": {
+    "kind": {
+      "type": "string",
+      "enum": ["new_enquiry", "reply", "unrelated"]
+    },
+    "matched_event_id": {
+      "type": ["string", "null"]
+    },
+    "event_type": {
+      "type": "string",
+      "enum": ["wedding", "conference", "offsite", "meeting"]
+    },
+    "pax": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "requested_spaces": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "needs_human": {
+      "type": "boolean"
+    },
+    "reason": {
+      "type": "string",
+      "maxLength": 300
+    }
+  },
+  "required": ["kind", "needs_human", "reason"],
+  "additionalProperties": false
+}
